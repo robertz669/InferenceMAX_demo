@@ -1,0 +1,45 @@
+name: Run Single Benchmark
+run-name: ${{ inputs.model }}-${{ inputs.precision }}-${{ inputs.framework }}-${{ inputs.experiment-name }}
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: "Runner to run on"
+        required: true
+        default: "mi300x-amd_0"
+      docker-image:
+        description: "Docker image to run"
+        required: true
+        default: "vllm-rocm-latest"
+      model:
+        description: "Model to run"
+        required: true
+        default: "meta-llama/Llama-2-7b-hf"
+      precision:
+        description: "Precision to run"
+        required: true
+        default: "float16"
+      framework:
+        description: "Framework to run"
+        required: true
+        default: "vllm"
+      experiment-name:
+        description: "Experiment name"
+        required: true
+        default: "my-first-benchmark"
+
+jobs:
+  benchmark:
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run benchmark
+        run: |
+          docker run \
+            -e HF_TOKEN=${{ secrets.HF_TOKEN }} \
+            -v /mnt/hf_hub_cache:/root/.cache/huggingface/hub \
+            ghcr.io/infernenceMax/${{ inputs.docker-image }} \
+            --model ${{ inputs.model }} \
+            --precision ${{ inputs.precision }} \
+            --framework ${{ inputs.framework }} \
+            --experiment_name ${{ inputs.experiment-name }}
