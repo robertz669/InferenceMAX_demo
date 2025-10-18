@@ -1,4 +1,4 @@
-name: Run Single Benchmark
+name: Run TGI Benchmark
 run-name: ${{ inputs.model }}-${{ inputs.precision }}-${{ inputs.framework }}-${{ inputs.experiment-name }}
 on:
   workflow_dispatch:
@@ -6,15 +6,15 @@ on:
       runner:
         description: "Runner to run on"
         required: true
-        default: "mi300x-amd_0"
+        default: "mi325x-amd_0"
       docker-image:
         description: "Docker image to run"
         required: true
-        default: "vllm-rocm-latest"
+        default: "ghcr.io/huggingface/text-generation-inference:latest-rocm"
       model:
         description: "Model to run"
         required: true
-        default: "meta-llama/Llama-2-7b-hf"
+        default: "mistralai/Mistral-7B-Instruct-v0.2"
       precision:
         description: "Precision to run"
         required: true
@@ -22,11 +22,11 @@ on:
       framework:
         description: "Framework to run"
         required: true
-        default: "vllm"
+        default: "tgi"
       experiment-name:
         description: "Experiment name"
         required: true
-        default: "my-first-benchmark"
+        default: "tgi-mistral-7b-test"
 
 jobs:
   benchmark:
@@ -38,7 +38,7 @@ jobs:
           docker run \
             -e HF_TOKEN=${{ secrets.HF_TOKEN }} \
             -v /mnt/hf_hub_cache:/root/.cache/huggingface/hub \
-            ghcr.io/infernencemax/${{ inputs.docker-image }} \
+            ${{ inputs.docker-image }} \
             --model ${{ inputs.model }} \
             --precision ${{ inputs.precision }} \
             --framework ${{ inputs.framework }} \
