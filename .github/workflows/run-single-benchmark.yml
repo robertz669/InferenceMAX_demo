@@ -40,6 +40,6 @@ jobs:
             -v /mnt/hf_hub_cache:/root/.cache/huggingface/hub \
             ${{ inputs.docker-image }} \
             --model-id ${{ inputs.model }} \
-            --precision ${{ inputs.precision }} \
+            #--precision ${{ inputs.precision }} \
             --framework ${{ inputs.framework }} \
             --experiment_name ${{ inputs.experiment-name }}
