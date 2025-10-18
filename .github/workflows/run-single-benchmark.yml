@@ -39,7 +39,7 @@ jobs:
             -e HF_TOKEN=${{ secrets.HF_TOKEN }} \
             -v /mnt/hf_hub_cache:/root/.cache/huggingface/hub \
             ${{ inputs.docker-image }} \
-            --model ${{ inputs.model }} \
+            --model-id ${{ inputs.model }} \
             --precision ${{ inputs.precision }} \
             --framework ${{ inputs.framework }} \
             --experiment_name ${{ inputs.experiment-name }}
