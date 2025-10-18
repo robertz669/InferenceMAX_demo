@@ -41,5 +41,5 @@ jobs:
             ${{ inputs.docker-image }} \
             --model-id ${{ inputs.model }} \
             --dtype ${{ inputs.precision }} \
-            --framework ${{ inputs.framework }} \
+            #--framework ${{ inputs.framework }} \
             --experiment_name ${{ inputs.experiment-name }}
